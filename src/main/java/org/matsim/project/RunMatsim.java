@@ -63,7 +63,8 @@ public class RunMatsim{
 		}
 
 		config.controler().setOverwriteFileSetting( OverwriteFileSetting.deleteDirectoryIfExists );
-
+config.controler().setOutputDirectory("output_testOTFvis");
+		config.controler().setLastIteration(0);
 		// possibly modify config here
 
 		// ---
@@ -78,7 +79,7 @@ public class RunMatsim{
 		
 		// possibly modify controler here
 
-//		controler.addOverridingModule( new OTFVisLiveModule() ) ;
+		//controler.addOverridingModule( new OTFVisLiveModule() ) ;
 
 		
 		// ---
