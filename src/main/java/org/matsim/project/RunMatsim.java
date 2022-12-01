@@ -36,6 +36,7 @@ import org.matsim.core.config.groups.StrategyConfigGroup;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.core.controler.OutputDirectoryHierarchy.OverwriteFileSetting;
+import org.matsim.core.network.NetworkUtils;
 import org.matsim.core.replanning.strategies.DefaultPlanStrategiesModule;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.collections.CollectionUtils;
@@ -57,23 +58,25 @@ public class RunMatsim{
 
 		Config config;
 		if ( args==null || args.length==0 || args[0]==null ){
-			config = ConfigUtils.loadConfig( "scenarios/equil/config.xml" );
+			config = ConfigUtils.loadConfig( "scenarios/equil/configTeleported.xml" );
 		} else {
 			config = ConfigUtils.loadConfig( args );
 		}
 
 		config.controler().setOverwriteFileSetting( OverwriteFileSetting.deleteDirectoryIfExists );
-config.controler().setOutputDirectory("output_testOTFvis");
-		config.controler().setLastIteration(0);
+config.controler().setOutputDirectory("output_teleported");
+		//config.controler().setLastIteration();
+		config.plansCalcRoute().setAccessEgressType(PlansCalcRouteConfigGroup.AccessEgressType.accessEgressModeToLink);
 		// possibly modify config here
 
 		// ---
 		
 		Scenario scenario = ScenarioUtils.loadScenario(config) ;
 
-		// possibly modify scenario here
-		
-		// ---
+		for (var link : scenario.getNetwork().getLinks().values()){
+			link.setAllowedModes(Set.of("car","bike"));
+		}
+
 		
 		Controler controler = new Controler( scenario ) ;
 		
