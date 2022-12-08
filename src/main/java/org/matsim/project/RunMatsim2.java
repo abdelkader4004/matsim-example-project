@@ -32,7 +32,7 @@ import java.util.Set;
  * @author nagel
  *
  */
-public class RunMatsimTests {
+public class RunMatsim2 {
 
 	public static void main(String[] args) {
 

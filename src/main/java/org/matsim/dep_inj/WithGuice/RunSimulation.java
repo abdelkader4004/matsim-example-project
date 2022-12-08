@@ -2,19 +2,28 @@ package org.matsim.dep_inj.WithGuice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
+import com.google.inject.Module;
 import org.matsim.dep_inj.WithGuice.alternative.HelperAlternativeImpl;
 import org.matsim.dep_inj.WithGuice.base.Helper;
+import org.matsim.dep_inj.WithGuice.base.HelperDefaultImpl;
 import org.matsim.dep_inj.WithGuice.base.Simulation;
 import org.matsim.dep_inj.WithGuice.base.SimulationDefaultImpl;
 
 class RunSimulation {
     public static void main(String[] args) {
 
-        var module=new AbstractModule() {
+//        var module=new AbstractModule() {
+//            @Override
+//            protected void configure(){
+//                bind(Simulation.class).to (SimulationDefaultImpl.class);
+//                bind(Helper.class).to (HelperAlternativeImpl.class);
+//            }
+//        };
+        Module module=new AbstractModule() {
             @Override
-            protected void configure(){
-                bind(Simulation.class).to (SimulationDefaultImpl.class);
-                bind(Helper.class).to (HelperAlternativeImpl.class);
+            protected void configure() {
+                bind( Simulation.class).to(SimulationDefaultImpl.class);
+                bind (Helper.class).to(HelperDefaultImpl.class);
             }
         };
         var injector=   Guice.createInjector(module);

@@ -17,14 +17,13 @@
  *                                                                         *
  * *********************************************************************** */
 
-package org.matsim.MyDVRP;
+package org.matsim.onetruck;
 
 import java.net.URL;
 
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.TransportMode;
-import org.matsim.contrib.dvrp.examples.onetaxi.OneTaxiModule;
-import org.matsim.contrib.dvrp.passenger.PassengerEngineQSimModule.PassengerEngineType;
+import org.matsim.contrib.dvrp.examples.onetruck.OneTruckModule;
 import org.matsim.contrib.dvrp.run.DvrpConfigGroup;
 import org.matsim.contrib.dvrp.run.DvrpModule;
 import org.matsim.contrib.dvrp.run.DvrpQSimComponents;
@@ -39,28 +38,22 @@ import org.matsim.vis.otfvis.OTFVisConfigGroup;
 /**
  * @author michalm
  */
-public final class RunOneTaxiExample {
-	public static void main(String args[]){
-
-		new RunOneTaxiExample().run();
-	}
-	public static void run() {
+public final class RunOneTruckExample {
+	public static void run(URL configUrl, String trucksFile, boolean otfvis, int lastIteration) {
 		// load config
-		Config config = ConfigUtils.loadConfig("examples/dvrp-grid/one_taxi_config.xml", new DvrpConfigGroup(), new OTFVisConfigGroup());
-		config.controler().setLastIteration(0);
-		System.out.println(config.controler().getOutputDirectory());
-		//System.exit(0);
+		Config config = ConfigUtils.loadConfig(configUrl, new DvrpConfigGroup(), new OTFVisConfigGroup());
+		config.controler().setLastIteration(lastIteration);
+
 		// load scenario
 		Scenario scenario = ScenarioUtils.loadScenario(config);
 
 		// setup controler
 		Controler controler = new Controler(scenario);
 		controler.addOverridingModule(new DvrpModule());
-		controler.addOverridingModule(new OneTaxiModule(ConfigGroup.getInputFileURL(config.getContext(), "one_taxi_vehicles.xml"),
-				PassengerEngineType.DEFAULT));
-		controler.configureQSimComponents(DvrpQSimComponents.activateModes(TransportMode.taxi));
+		controler.addOverridingModule(new OneTruckModule(ConfigGroup.getInputFileURL(config.getContext(), trucksFile)));
+		controler.configureQSimComponents(DvrpQSimComponents.activateModes(TransportMode.truck));
 
-		if (false) {
+		if (otfvis) {
 			controler.addOverridingModule(new OTFVisLiveModule()); // OTFVis visualisation
 		}
 

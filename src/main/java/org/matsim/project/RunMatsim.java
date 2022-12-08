@@ -64,7 +64,7 @@ public class RunMatsim{
 		}
 
 		config.controler().setOverwriteFileSetting( OverwriteFileSetting.deleteDirectoryIfExists );
-config.controler().setOutputDirectory("output_teleported");
+		config.controler().setOutputDirectory("output_teleported");
 		//config.controler().setLastIteration();
 		config.plansCalcRoute().setAccessEgressType(PlansCalcRouteConfigGroup.AccessEgressType.accessEgressModeToLink);
 		// possibly modify config here

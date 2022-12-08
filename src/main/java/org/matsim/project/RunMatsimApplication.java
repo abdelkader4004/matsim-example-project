@@ -18,20 +18,23 @@
  * *********************************************************************** */
 package org.matsim.project;
 
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 import org.matsim.api.core.v01.Scenario;
+import org.matsim.api.core.v01.network.Link;
 import org.matsim.application.MATSimApplication;
 import org.matsim.core.config.Config;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.controler.OutputDirectoryHierarchy.OverwriteFileSetting;
+import picocli.CommandLine;
 
 /**
  * @author nagel
  *
  */
 @CommandLine.Command( header = ":: MyScenario ::", version = "1.0")
+@MATSimApplication.Prepare({CreateNetwork.class})
 public class RunMatsimApplication extends MATSimApplication {
-
+@CommandLine.Option(names = "--speed-reduction",description = "This is speed reduction option", defaultValue = "0.1")
+	private double speedReduction;
 	public RunMatsimApplication() {
 		super("scenarios/equil/config.xml");
 	}
@@ -56,7 +59,10 @@ public class RunMatsimApplication extends MATSimApplication {
 	protected void prepareScenario(Scenario scenario) {
 
 		// possibly modify scenario here
-
+		for (Link link : scenario.getNetwork().getLinks().values()) {
+			if(link.getFreespeed()<=50/6.3)
+				link.setFreespeed(link.getFreespeed()*speedReduction);
+		}
 		// ---
 
 	}

@@ -33,6 +33,7 @@ import org.matsim.testcases.MatsimTestUtils;
 import org.matsim.utils.eventsfilecomparison.EventsFileComparator;
 
 import java.net.URL;
+import java.util.Arrays;
 
 /**
  * @author nagel
@@ -53,6 +54,12 @@ public class RunMatsimTest {
 				  "--config:controler.outputDirectory", utils.getOutputDirectory(),
 				  "--config:controler.lastIteration", "1"
 			} ;
+
+//			for (String month : args) {
+//			System.out.println("--------------");
+//				System.out.println(month);
+//			}
+//			System.exit(1);
 			RunMatsim.main( args ) ;
 			{
 				Population expected = PopulationUtils.createPopulation( ConfigUtils.createConfig() ) ;

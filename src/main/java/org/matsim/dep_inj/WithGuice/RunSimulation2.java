@@ -36,7 +36,7 @@ class RunSimulation2 {
         public static void main(String[] args) {
             Helper helper = new HelperDefaultImpl();
             Simulation simulation = new SimulationDefaultImpl(helper);
-// ^^^^^^^
+               // ^^^^^^^
 // (this is where the dependency on Helper is injected!)
             simulation.doStep();
         }

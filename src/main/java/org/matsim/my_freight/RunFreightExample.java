@@ -16,7 +16,7 @@
  *   See also COPYING, LICENSE and WARRANTY file                           *
  *                                                                         *
  * *********************************************************************** */
-package org.matsim.freight;
+package org.matsim.my_freight;
 
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.contrib.freight.Freight;
@@ -30,7 +30,6 @@ import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.io.IOUtils;
 import org.matsim.examples.ExamplesUtils;
 
-import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 
@@ -67,14 +66,14 @@ public class RunFreightExample {
 //		FreightUtils.getCarrierVehicleTypes( scenario ).getVehicleTypes().get( Id.create("light", VehicleType.class ) ).getCapacity().setOther( 1 );
 
         // output before jsprit run (not necessary)
-        new CarrierPlanXmlWriterV2(FreightUtils.getCarriers( scenario )).write( "output/freight/jsprit_unplannedCarriers.xml" ) ;
+        new CarrierPlanXmlWriterV2(FreightUtils.getCarriers( scenario )).write( "output/freightJsprit/jsprit_unplannedCarriers.xml" ) ;
         // (this will go into the standard "output" directory.  note that this may be removed if this is also used as the configured output dir.)
 
         //Solving the VRP (generate carrier's tour plans)
         FreightUtils.runJsprit( scenario );
 
         // output after jsprit run (not necessary)
-        new CarrierPlanXmlWriterV2(FreightUtils.getCarriers( scenario )).write( "output/freight/jsprit_plannedCarriers.xml" ) ;
+        new CarrierPlanXmlWriterV2(FreightUtils.getCarriers( scenario )).write( "output/freightJsprit/jsprit_plannedCarriers.xml" ) ;
         // (this will go into the standard "output" directory.  note that this may be removed if this is also used as the configured output dir.)
 
         //MATSim configuration:
@@ -91,6 +90,8 @@ public class RunFreightExample {
 
 //		start of the MATSim-Run:
         controler.run();
+//        System.out.println();
+
     }
 
 

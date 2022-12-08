@@ -8,7 +8,7 @@ import org.matsim.core.controler.*;
 import org.matsim.core.scenario.ScenarioUtils;
 
 
-public class RunSimulationTypical {
+public class RunSimulationTypical /*i.e. the normal method*/{
 
     public static void main(String [] args){
         Config config= ConfigUtils.loadConfig("scenarios/equil/config.xml");
@@ -18,10 +18,16 @@ public class RunSimulationTypical {
         Scenario scenario= ScenarioUtils.loadScenario(config);
         Controler controler = new Controler(scenario);
         controler.addOverridingModule(new AbstractModule() {
+
             @Override
-            public void install() {
-                bind (Abc.class).to(AbcImpl.class);
-                this.addRoutingModuleBinding("pedelec");
+            public void install() { // Here we add new modules, when the module already exists then it is overridden
+//                bind (Abc.class).to(AbcImpl.class);
+//                this.addRoutingModuleBinding("pedelec");
+               // bindMobsim().toInstance(null);
+                //addControlerListenerBinding().toInstance(null);
+
+                //addEventHandlerBinding().toInstance(new MyEventHandler(scenario));
+                addEventHandlerBinding().to(MyEventHandler.class);
             }
         });
         controler.run();
@@ -41,7 +47,8 @@ interface Abc{
         }
 
     }
-/*    interface Helper{
+
+    /*    interface Helper{
 
         void help();
     }
