@@ -44,8 +44,8 @@ public class RunMatsim2 {
 		}
 
 		config.controler().setOverwriteFileSetting( OverwriteFileSetting.deleteDirectoryIfExists );
-        config.controler().setOutputDirectory("output_equil_tests");
-		//config.controler().setLastIteration(1);
+       // config.controler().setOutputDirectory("output_equil_tests");
+		config.controler().setLastIteration(0);
 		Scenario scenario = ScenarioUtils.loadScenario(config) ;
 		Controler controler = new Controler( scenario ) ;
 		controler.run();
