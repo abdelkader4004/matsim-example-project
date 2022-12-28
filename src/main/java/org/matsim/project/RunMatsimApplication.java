@@ -31,7 +31,7 @@ import picocli.CommandLine;
  *
  */
 @CommandLine.Command( header = ":: MyScenario ::", version = "1.0")
-@MATSimApplication.Prepare({CreateNetwork.class})
+@MATSimApplication.Prepare({CreateNetworkFromOSM.class})
 public class RunMatsimApplication extends MATSimApplication {
 @CommandLine.Option(names = "--speed-reduction",description = "This is speed reduction option", defaultValue = "0.1")
 	private double speedReduction;

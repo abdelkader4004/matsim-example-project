@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 @CommandLine.Command(name="network_create",description = "Create a network from OSM")
-public class CreateNetwork implements MATSimAppCommand {
+public class CreateNetworkFromOSM implements MATSimAppCommand {
     @CommandLine.Parameters(defaultValue = "brandenburg-latest.osm.pbf", description = "cdfdsddfvd")
     private List<Path> input;
     @CommandLine.Option(names = "--output",defaultValue = "network.xml.gz")
@@ -24,7 +24,7 @@ public class CreateNetwork implements MATSimAppCommand {
     private CrsOptions crs=new CrsOptions("EPSG:4326","EPSG:25832");
 
     public static void main(String[] args) {
-        new CreateNetwork().execute(args);
+        new CreateNetworkFromOSM().execute(args);
     }
     @Override
     public Integer call() throws Exception {
