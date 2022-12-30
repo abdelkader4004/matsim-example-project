@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<!DOCTYPE vehicles SYSTEM "http://matsim.org/files/dtd/dvrp_vehicles_v1.dtd">
+
+<vehicles>
+	<vehicle id="truck_one" start_link="215" t_0="0" t_1="8000"/>
+	<vehicle id="truck_two" start_link="112" t_0="0" t_1="8000"/>
+	<!-- <vehicle id="truck_three" start_link="113" t_0="0" t_1="8000"/> -->
+	<!-- <vehicle id="truck_four" start_link="114" t_0="0" t_1="8000"/> -->
+	
+</vehicles>
