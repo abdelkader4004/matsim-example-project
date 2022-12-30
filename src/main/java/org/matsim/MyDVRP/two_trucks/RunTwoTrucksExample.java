@@ -58,7 +58,6 @@ public final class RunTwoTrucksExample {
 		controler.addOverridingModule(new DvrpModule());
 		controler.addOverridingModule(
 				new TwoTrucksModule(ConfigGroup.getInputFileURL(config.getContext(),"two_trucks_vehicles.xml")));
-//		controler.addOverridingModule(new TwoTrucksModule(Path.of("C:\\Users\\abd\\IdeaProjects\\matsim-example-project\\examples\\MyDvrp\\two_trucks_vehicles.xml").toUri().toURL()));
 
 		controler.configureQSimComponents(DvrpQSimComponents.activateModes(TransportMode.truck));
 
