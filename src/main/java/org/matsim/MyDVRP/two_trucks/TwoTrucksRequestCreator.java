@@ -38,7 +38,7 @@ import java.util.PriorityQueue;
  */
 public final class TwoTrucksRequestCreator implements MobsimAfterSimStepListener {
 	private final VrpOptimizer optimizer;
-	private final PriorityQueue<TwoTrucksRequest> requests = new PriorityQueue<>(10,
+	private final PriorityQueue<TwoTrucksRequest> requests = new PriorityQueue<>(20,
 			Comparator.comparing(Request::getSubmissionTime));
 
 	@Inject
@@ -47,15 +47,27 @@ public final class TwoTrucksRequestCreator implements MobsimAfterSimStepListener
 		this.optimizer = optimizer;
 		requests.addAll(Arrays.asList(
 				createRequest("parcel_0", "114", "349", 0, network),
-				createRequest("parcel_1", "144", "437", 1, network),
-				createRequest("parcel_2", "223", "347", 600, network),
-				createRequest("parcel_3", "234", "119", 600, network),
-				createRequest("parcel_4", "314", "260", 1200, network),
-				createRequest("parcel_5", "333", "438", 1200, network),
-				createRequest("parcel_6", "325", "111", 1200, network),
-				createRequest("parcel_7", "412", "318", 1200, network),
-				createRequest("parcel_8", "455", "236", 1200, network),
-				createRequest("parcel_9", "139", "330", 2700, network)));
+				createRequest("parcel_1", "144", "437", 100, network),
+				createRequest("parcel_2", "223", "347", 200, network),
+				createRequest("parcel_3", "234", "119", 200, network),
+				createRequest("parcel_4", "314", "260", 200, network),
+				createRequest("parcel_5", "333", "438", 250, network),
+				createRequest("parcel_6", "325", "111", 300, network),
+				createRequest("parcel_7", "412", "318", 300, network),
+				createRequest("parcel_8", "455", "236", 300, network),
+				createRequest("parcel_9", "139", "330", 600, network),
+				createRequest("parcel_10", "142", "349", 700, network),
+				createRequest("parcel_11", "144", "142", 780, network),
+				createRequest("parcel_12", "223", "214", 800, network),
+				createRequest("parcel_13", "263", "119", 800, network),
+				createRequest("parcel_14", "314", "324", 1100, network),
+				createRequest("parcel_15", "333", "350", 1100, network),
+				createRequest("parcel_16", "120", "111", 1200, network),
+				createRequest("parcel_17", "412", "318", 1200, network),
+				createRequest("parcel_18", "455", "458", 1200, network),
+				createRequest("parcel_19", "111", "430", 2700, network)
+
+				));
 	}
 
 	private TwoTrucksRequest createRequest(String requestId, String fromLinkId, String toLinkId, double time,

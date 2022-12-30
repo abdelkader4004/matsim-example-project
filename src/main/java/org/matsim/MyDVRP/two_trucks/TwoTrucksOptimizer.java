@@ -87,7 +87,7 @@ final class TwoTrucksOptimizer implements VrpOptimizer {
 
 		double currentTime = timer.getTimeOfDay();
 		aBoolean=!aBoolean;
-if (!aBoolean){
+if (aBoolean){
 	Schedule schedule1 = vehicle1.getSchedule();
 	StayTask lastTask1 = (StayTask)Schedules.getLastTask(schedule1);// only WaitTask possible here
 
