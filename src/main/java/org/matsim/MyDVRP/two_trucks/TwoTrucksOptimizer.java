@@ -42,6 +42,7 @@ import org.matsim.core.trafficmonitoring.FreeSpeedTravelTime;
 
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author michalm
@@ -57,7 +58,7 @@ final class TwoTrucksOptimizer implements VrpOptimizer {
 	private final LeastCostPathCalculator router;
 
 	private final DvrpVehicle vehicle1;// we have only one vehicle
-	private final DvrpVehicle vehicle2;// we have only one vehicle
+	private final DvrpVehicle vehicle2;// we added another vehicle
 	private static final double PICKUP_DURATION = 120;
 	private static final double DELIVERY_DURATION = 60;
 	private static  Boolean aBoolean = true;
@@ -72,8 +73,6 @@ final class TwoTrucksOptimizer implements VrpOptimizer {
 		vehicle1=fleet.getVehicles().get(Id.createVehicleId("truck_one"));
 		vehicle2=fleet.getVehicles().get(Id.createVehicleId("truck_two"));
 
-//	vehicle1 = fleet.getVehicles().values().iterator().next();
-//    vehicle2 = fleet.getVehicles().values().iterator().next();
 		vehicle1.getSchedule()
 				.addTask(new DefaultStayTask(TwoTrucksTaskType.WAIT, vehicle1.getServiceBeginTime(), vehicle1.getServiceEndTime(),
 						vehicle1.getStartLink()));
@@ -136,7 +135,7 @@ if (aBoolean){
 
 
 }else{
-	Schedule schedule2 = vehicle1.getSchedule();
+	Schedule schedule2 = vehicle2.getSchedule();
 	StayTask lastTask2 = (StayTask)Schedules.getLastTask(schedule2);//
 
 
