@@ -87,16 +87,16 @@ final class TwoTrucksOptimizer implements VrpOptimizer {
 		double currentTime = timer.getTimeOfDay();
 		aBoolean=!aBoolean;
 if (aBoolean){
-	Schedule schedule1 = vehicle1.getSchedule();
-	StayTask lastTask1 = (StayTask)Schedules.getLastTask(schedule1);// only WaitTask possible here
+	Schedule schedule = vehicle1.getSchedule();
+	StayTask lastTask = (StayTask)Schedules.getLastTask(schedule);// only WaitTask possible here
 
-		switch (lastTask1.getStatus()) {
+		switch (lastTask.getStatus()) {
 			case PLANNED:
-				schedule1.removeLastTask();// remove wait task
+				schedule.removeLastTask();// remove wait task
 				break;
 
 			case STARTED:
-				lastTask1.setEndTime(currentTime);// shorten wait task
+				lastTask.setEndTime(currentTime);// shorten wait task
 				break;
 
 			case PERFORMED:
@@ -110,28 +110,28 @@ if (aBoolean){
 
 
 
-	double t0 = schedule1.getStatus() == ScheduleStatus.UNPLANNED ?
+	double t0 = schedule.getStatus() == ScheduleStatus.UNPLANNED ?
 			Math.max(vehicle1.getServiceBeginTime(), currentTime) :
-			Schedules.getLastTask(schedule1).getEndTime();
+			Schedules.getLastTask(schedule).getEndTime();
 
-	VrpPathWithTravelData pathToCustomer = VrpPaths.calcAndCreatePath(lastTask1.getLink(), fromLink, t0, router,
+	VrpPathWithTravelData pathToCustomer = VrpPaths.calcAndCreatePath(lastTask.getLink(), fromLink, t0, router,
 			travelTime);
-	schedule1.addTask(new DefaultDriveTask(TwoTrucksTaskType.EMPTY_DRIVE, pathToCustomer));
+	schedule.addTask(new DefaultDriveTask(TwoTrucksTaskType.EMPTY_DRIVE, pathToCustomer));
 
 	double t1 = pathToCustomer.getArrivalTime();
 	double t2 = t1 + PICKUP_DURATION;// 2 minutes for the pickup
-	schedule1.addTask(new TwoTrucksServeTask(TwoTrucksTaskType.PICKUP, t1, t2, fromLink, req));
+	schedule.addTask(new TwoTrucksServeTask(TwoTrucksTaskType.PICKUP, t1, t2, fromLink, req));
 
 	VrpPathWithTravelData pathWithCustomer = VrpPaths.calcAndCreatePath(fromLink, toLink, t2, router, travelTime);
-	schedule1.addTask(new DefaultDriveTask(TwoTrucksTaskType.LOADED_DRIVE, pathWithCustomer));
+	schedule.addTask(new DefaultDriveTask(TwoTrucksTaskType.LOADED_DRIVE, pathWithCustomer));
 
 	double t3 = pathWithCustomer.getArrivalTime();
 	double t4 = t3 + DELIVERY_DURATION;// 1 minute for the delivery
-	schedule1.addTask(new TwoTrucksServeTask(TwoTrucksTaskType.DELIVERY, t3, t4, toLink, req));
+	schedule.addTask(new TwoTrucksServeTask(TwoTrucksTaskType.DELIVERY, t3, t4, toLink, req));
 
 	// just wait (and be ready) till the end of the vehicle's time window (T1)
 	double tEnd = Math.max(t4, vehicle1.getServiceEndTime());
-	schedule1.addTask(new DefaultStayTask(TwoTrucksTaskType.WAIT, t4, tEnd, toLink));
+	schedule.addTask(new DefaultStayTask(TwoTrucksTaskType.WAIT, t4, tEnd, toLink));
 
 
 }else{
