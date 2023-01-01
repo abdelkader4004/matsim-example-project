@@ -20,6 +20,7 @@
 package org.matsim.MyDVRP.multi_trucks;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.RandomUtils;
 import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
@@ -39,6 +40,7 @@ import org.matsim.core.router.util.LeastCostPathCalculator;
 import org.matsim.core.router.util.TravelTime;
 import org.matsim.core.trafficmonitoring.FreeSpeedTravelTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -46,6 +48,8 @@ import java.util.Random;
  * @author michalm
  */
 final class MultiTrucksOptimizer implements VrpOptimizer {
+    private Random rand=new Random();
+
     enum MultiTrucksTaskType implements Task.TaskType {
         EMPTY_DRIVE, LOADED_DRIVE, PICKUP, DELIVERY, WAIT
     }
@@ -56,10 +60,10 @@ final class MultiTrucksOptimizer implements VrpOptimizer {
     private final LeastCostPathCalculator router;
 
 
-    Fleet thisfleet;
+    ArrayList<DvrpVehicle> thisfleet=new ArrayList<>();
     private static final double PICKUP_DURATION = 120;
     private static final double DELIVERY_DURATION = 60;
-    private static Boolean aBoolean = true;
+
 
     @Inject
     public MultiTrucksOptimizer(@DvrpMode(TransportMode.truck) Network network, @DvrpMode(TransportMode.truck) Fleet fleet,
@@ -68,8 +72,8 @@ final class MultiTrucksOptimizer implements VrpOptimizer {
         travelTime = new FreeSpeedTravelTime();
         router = new SpeedyDijkstraFactory().createPathCalculator(network, new TimeAsTravelDisutility(travelTime),
                 travelTime);
-        thisfleet = fleet;
-        for (DvrpVehicle vehicle : thisfleet.getVehicles().values()) {
+        thisfleet .addAll(fleet.getVehicles().values());
+        for (DvrpVehicle vehicle : fleet.getVehicles().values()) {
             vehicle.getSchedule()
                     .addTask(new DefaultStayTask(MultiTrucksTaskType.WAIT, vehicle.getServiceBeginTime(), vehicle.getServiceEndTime(),
                             vehicle.getStartLink()));
@@ -81,10 +85,7 @@ final class MultiTrucksOptimizer implements VrpOptimizer {
     public void requestSubmitted(Request request) {
 
         double currentTime = timer.getTimeOfDay();
-
-
-        DvrpVehicle vehicle = ((DvrpVehicle) (thisfleet.getVehicles().values().toArray()
-                [new Random().nextInt(thisfleet.getVehicles().size())]));
+        DvrpVehicle vehicle = (DvrpVehicle) thisfleet.get(rand.nextInt(thisfleet.size()));
         Schedule schedule = vehicle.getSchedule();
         StayTask lastTask = (StayTask) Schedules.getLastTask(schedule);// only WaitTask possible here
 
