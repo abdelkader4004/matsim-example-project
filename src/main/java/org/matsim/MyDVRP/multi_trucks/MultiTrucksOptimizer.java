@@ -20,7 +20,6 @@
 package org.matsim.MyDVRP.multi_trucks;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.RandomUtils;
 import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
@@ -48,7 +47,7 @@ import java.util.Random;
  * @author michalm
  */
 final class MultiTrucksOptimizer implements VrpOptimizer {
-    private Random rand=new Random();
+    private Random rand = new Random();
 
     enum MultiTrucksTaskType implements Task.TaskType {
         EMPTY_DRIVE, LOADED_DRIVE, PICKUP, DELIVERY, WAIT
@@ -60,7 +59,7 @@ final class MultiTrucksOptimizer implements VrpOptimizer {
     private final LeastCostPathCalculator router;
 
 
-    ArrayList<DvrpVehicle> thisfleet=new ArrayList<>();
+    ArrayList<DvrpVehicle> thisfleet = new ArrayList<>();
     private static final double PICKUP_DURATION = 120;
     private static final double DELIVERY_DURATION = 60;
 
@@ -72,7 +71,7 @@ final class MultiTrucksOptimizer implements VrpOptimizer {
         travelTime = new FreeSpeedTravelTime();
         router = new SpeedyDijkstraFactory().createPathCalculator(network, new TimeAsTravelDisutility(travelTime),
                 travelTime);
-        thisfleet .addAll(fleet.getVehicles().values());
+        thisfleet.addAll(fleet.getVehicles().values());
         for (DvrpVehicle vehicle : fleet.getVehicles().values()) {
             vehicle.getSchedule()
                     .addTask(new DefaultStayTask(MultiTrucksTaskType.WAIT, vehicle.getServiceBeginTime(), vehicle.getServiceEndTime(),
@@ -83,11 +82,24 @@ final class MultiTrucksOptimizer implements VrpOptimizer {
 
     @Override
     public void requestSubmitted(Request request) {
-
         double currentTime = timer.getTimeOfDay();
         DvrpVehicle vehicle = (DvrpVehicle) thisfleet.get(rand.nextInt(thisfleet.size()));
         Schedule schedule = vehicle.getSchedule();
         StayTask lastTask = (StayTask) Schedules.getLastTask(schedule);// only WaitTask possible here
+
+
+
+        System.out.println("requestSubmitted At:"+request.getSubmissionTime()+" CurrTime: "+currentTime);
+
+
+//        try {
+//            BufferConsumer.buffer.put("requestSubmitted Hellooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+//            BufferConsumer.buffer.put(" Time:" + timer.getTimeOfDay() +" VehicleID: " + vehicle.getId().toString() +
+//                    " CuurentTaskType " + vehicle.getSchedule().getCurrentTask().getTaskType());
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+
 
         switch (lastTask.getStatus()) {
             case PLANNED:
@@ -137,7 +149,38 @@ final class MultiTrucksOptimizer implements VrpOptimizer {
     @Override
     public void nextTask(DvrpVehicle vehicle) {
         updateTimings(vehicle);
+
+
+        System.out.println("nextTask ------------------------------------------");
+
+
+
+//        try {
+//            BufferConsumer.buffer.put("nextTask Hellooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+//
+//           try{
+////               for ( Object s : vehicle.getSchedule().getTasks()) {
+////                   System.out.println(s);
+////               }
+//            BufferConsumer.buffer.put(" Time:" + timer.getTimeOfDay() +" VehicleID: " + vehicle.getId().toString() +
+//                    " CuurentTaskType " + vehicle.getSchedule().getCurrentTask().getTaskType());
+//           } catch (IllegalStateException e) {
+//               BufferConsumer.buffer.put("Schedule "+ vehicle.getSchedule().getStatus().toString());
+//           }
+//
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+
+
+
+
+
+
+//        try{System.out.println(timer.getTimeOfDay()+ ": " +vehicle.getId().toString()+" == " +vehicle.getSchedule().getCurrentTask().getTaskType());}
+//        catch (Exception e){}
         vehicle.getSchedule().nextTask();
+
     }
 
     /**

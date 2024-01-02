@@ -38,33 +38,41 @@ import java.net.MalformedURLException;
  * @author michalm
  */
 public final class RunMultiTrucksExample {
-	public static void main(String args[]) throws MalformedURLException {
+    public static void main(String args[]) throws MalformedURLException {
 
-		new RunMultiTrucksExample().run();
-	}
-	public static void run() throws MalformedURLException {
-		// load config
-		Config config = ConfigUtils.loadConfig("examples/MyDvrp/multi_trucks_config.xml", new DvrpConfigGroup(), new OTFVisConfigGroup());
-		config.controler().setLastIteration(0);
-		System.out.println(config.controler().getOutputDirectory());
-		//System.exit(0);
-		// load scenario
-		Scenario scenario = ScenarioUtils.loadScenario(config);
+        new RunMultiTrucksExample().run();
+    }
 
-		// setup controler
-		Controler controler = new Controler(scenario);
-		controler.addOverridingModule(new DvrpModule());
-		controler.addOverridingModule(
-				new MultiTrucksModule(ConfigGroup.getInputFileURL(config.getContext(),"multi_trucks_vehicles.xml")));
+    public static void run() throws MalformedURLException {
+        var  dvrpConfigGroup=new DvrpConfigGroup();
+       // dvrpConfigGroup.setTravelTimeEstimationBeta(100);
+        // load config
+        Config config = ConfigUtils.loadConfig("examples/MyDvrp/multi_trucks_config.xml", dvrpConfigGroup, new OTFVisConfigGroup());
 
-		controler.configureQSimComponents(DvrpQSimComponents.activateModes(TransportMode.truck));
+        config.controler().setLastIteration(0);
+        System.out.println(config.controler().getOutputDirectory());
+        //System.exit(0);
+        // load scenario
+        Scenario scenario = ScenarioUtils.loadScenario(config);
+
+        // setup controler
+        Controler controler = new Controler(scenario);
+        controler.addOverridingModule(new DvrpModule());
+        controler.addOverridingModule(
+                new MultiTrucksModule(ConfigGroup.getInputFileURL(config.getContext(), "multi_trucks_vehicles.xml")));
+
+        controler.configureQSimComponents(DvrpQSimComponents.activateModes(TransportMode.truck));
 
 
-		if (false) {
-			controler.addOverridingModule(new OTFVisLiveModule()); // OTFVis visualisation
-		}
-
-		// run simulation
-		controler.run();
-	}
+        if (1==0) {
+            controler.addOverridingModule(new OTFVisLiveModule()); // OTFVis visualisation
+        }
+        //run thread
+        var bc = new BufferConsumer();
+        Thread thread = new Thread(bc);
+        thread.start();
+        // run simulation
+        controler.run();
+        bc.halte();
+    }
 }

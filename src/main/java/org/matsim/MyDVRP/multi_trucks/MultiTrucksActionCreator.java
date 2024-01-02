@@ -48,8 +48,8 @@ final class MultiTrucksActionCreator implements VrpAgentLogic.DynActionCreator {
 		switch ((MultiTrucksOptimizer.MultiTrucksTaskType)task.getTaskType()) {
 			case EMPTY_DRIVE:
 			case LOADED_DRIVE:
-				return VrpLegFactory.createWithOfflineTracker(TransportMode.truck, vehicle, timer);
-				//return VrpLegFactory.createWithOnlineTracker(TransportMode.truck,vehicle,null,timer);
+				//return VrpLegFactory.createWithOfflineTracker(TransportMode.truck, vehicle, timer);
+				return VrpLegFactory.createWithOnlineTracker(TransportMode.truck,vehicle,null,timer);
 			case PICKUP:
 			case DELIVERY:
 			case WAIT:

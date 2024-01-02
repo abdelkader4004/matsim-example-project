@@ -85,9 +85,11 @@ public final class MultiTrucksRequestCreator implements MobsimAfterSimStepListen
 
     private MultiTrucksRequest createRequest(String requestId, String fromLinkId, String toLinkId, double time,
                                              Network network) {
-        return new MultiTrucksRequest(Id.create(requestId, Request.class),
+        MultiTrucksRequest t=  new MultiTrucksRequest(Id.create(requestId, Request.class),
                 network.getLinks().get(Id.createLinkId(fromLinkId)), network.getLinks().get(Id.createLinkId(toLinkId)),
                 time);
+        System.out.println("Request "+ t.getId()+ " : submitted at "+ t.getSubmissionTime());
+        return t;
     }
 
     @Override
